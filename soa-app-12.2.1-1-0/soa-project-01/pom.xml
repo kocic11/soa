@@ -56,6 +56,9 @@
         <scatest.result>${scac.output.dir}/testResult</scatest.result>
         <!--  input is the name of the composite to run test suties against -->
         <input>soa-project-01</input>
+        <oracleHome>
+            ${env.ORACLE_HOME}
+        </oracleHome>
     </properties>
 
     <!--
@@ -98,6 +101,36 @@
                 </configuration>
                 <!-- extensions=true is needed to use the custom sar packaging type -->
                 <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>com.oracle.adf.plugin</groupId>
+                <artifactId>ojdeploy</artifactId>
+                <version>12.2.1-1-0</version>
+                <configuration>
+                    <ojdeploy>
+                        ${oracleHome}/jdeveloper/jdev/bin/ojdeploy
+                    </ojdeploy>
+                    <workspace>
+                        ${basedir}/../soa-app-12.2.1-1-0.jws
+                    </workspace>
+                    <project>
+                        soa-project-01
+                    </project>
+                    <profile>
+                        soa-project-01
+                    </profile>
+                    <outputfile>
+                        ${project.build.directory}/${project.build.finalName}.jar
+                    </outputfile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
